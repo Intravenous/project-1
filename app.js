@@ -22,17 +22,17 @@ function setUpNewGame() {
   startButton.addEventListener('click', () => {
     const startInterval = setInterval(() => {
       if (cells[snake].classList.contains('snake')) {
-        cells[snake + 1].classList.add('snake')
         cells[snake].classList.remove('snake')
-        cells[snake + 1].classList.add('snake')
+        snake += 1
+        cells[snake].classList.add('snake')
       } 
-    }, 10)
+    }, 200)
   })
 
 
   // Snake Movement Keys Logic
   document.addEventListener('keydown', (event) => {
-    console.log(event.key) // how you identify the name of the key that has been pressed
+    // console.log(event.key) // how you identify the name of the key that has been pressed
     if (event.key === 'ArrowRight') {
       if (snake === cells.length - 1) { // what is this doing exactley?
         return
@@ -41,6 +41,7 @@ function setUpNewGame() {
       snake += 1
       cells[snake].classList.add('snake')
     } else if (event.key === 'ArrowLeft') {
+      // clearInterval(interval)
       if (snake === 0) {
         return
       }
@@ -64,28 +65,7 @@ function setUpNewGame() {
     }
   })
 
-  // //NEW - snake logic - create a loop to change the snake array by one
-  // for (let i = 0; i < gridCellCount; i++) {
-  //   cells[i].classList.add('snake')
-  //   console.log(snake)
-  // }
-
-
-
-  // Snake Logic
-  // cells[snake].classList.add('snake')
-  // // myArray.push('Another thing')
-  // // snake.push(1)
-  // snake = 1
-  // console.log(snake)
-  // cells[snake].classList.add('snake')
-  // snake = 2
-  // console.log(snake)
   cells[snake].classList.add('snake')
-  // cells[snake].classList.add('snake')
-  // cells[1].classList.add('snake')
-  // cells[2].classList.add('snake')
-  // cells[3].classList.add('snake')
 
   // cells[food].classList.add('food')
 
