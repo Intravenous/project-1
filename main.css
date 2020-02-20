@@ -1,0 +1,27 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 0;
+}
+
+.grid {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  width: 600px;
+  height: 600px;
+  flex-wrap: wrap; /*ensures the boxes wrap rather than one line*/
+}
+
+.cell {
+  width: 5%; /*need to change width & height if width size of grid changes in app.js*/
+  height: 5%;
+  border: 1px solid green;
+}
