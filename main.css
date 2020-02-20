@@ -24,4 +24,15 @@ body {
   width: 5%; /*need to change width & height if width size of grid changes in app.js*/
   height: 5%;
   border: 1px solid green;
+  /* background-color: #acccb8; */
+}
+
+.snake {
+  background-image: url(./images/snake-head.jpeg);
+  background-size: contain;
+}
+
+.food {
+  background-image: url(./images/food-mouse.jpg);
+  background-size: contain;
 }
