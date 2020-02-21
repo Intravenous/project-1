@@ -4,19 +4,23 @@ function setUpNewGame() {
   const grid = document.querySelector('.grid')
   const startButton = document.querySelector('#start')
   const cells = []
-  let snake = 4 //will be 3
-  let food =  40
+  let snake = 3
+  let food = 40
   let score = 0
 
 
   for (let i = 0; i < gridCellCount; i++) {
     const cell = document.createElement('div')
     cell.classList.add('cell')
+    // cell.innerHTML = i
     grid.appendChild(cell)
     cells.push(cell)
   }
 
   console.log(cells)
+
+  //Snake starting position
+  cells[snake].classList.add('snake')
 
   //Start Game & Move snake
   startButton.addEventListener('click', () => {
@@ -25,29 +29,41 @@ function setUpNewGame() {
         cells[snake].classList.remove('snake')
         snake += 1
         cells[snake].classList.add('snake')
-      } 
+      }
     }, 200)
   })
 
+  
+  // Think about refactoring this using a switch statement
+  let rightInterval
+  let leftInterval
 
   // Snake Movement Keys Logic
   document.addEventListener('keydown', (event) => {
-    // console.log(event.key) // how you identify the name of the key that has been pressed
+    console.log(event.key) // how you identify the name of the key that has been pressed //new
     if (event.key === 'ArrowRight') {
-      if (snake === cells.length - 1) { // what is this doing exactley?
-        return
-      }
-      cells[snake].classList.remove('snake')
-      snake += 1
-      cells[snake].classList.add('snake')
-    } else if (event.key === 'ArrowLeft') {
-      // clearInterval(interval)
-      if (snake === 0) {
-        return
-      }
-      cells[snake].classList.remove('snake')
-      snake -= 1
-      cells[snake].classList.add('snake')
+      rightInterval = setInterval(() => {
+        if (snake === cells.length - 1) { // what is this doing exactly?  Stopping the snake from going outside the boundry at the end of the array?
+          return
+        }
+        cells[snake].classList.remove('snake')
+        snake += 1
+        cells[snake].classList.add('snake')
+
+      }, 200)
+    }
+    if (event.key === 'ArrowLeft') {
+      leftInterval = setInterval(() => {
+
+        if (snake === 0) {  //stopping the snake from going out the boundry if it's at the begining of the array
+          return
+        }
+        clearInterval(rightInterval)
+        console.log('hello')
+        cells[snake].classList.remove('snake')
+        snake -= 1
+        cells[snake].classList.add('snake')
+      }, 200)
     } else if (event.key === 'ArrowUp') {
       if (snake < width) {
         return
@@ -65,7 +81,40 @@ function setUpNewGame() {
     }
   })
 
-  cells[snake].classList.add('snake')
+
+  // // Snake Movement Keys Logic
+  // document.addEventListener('keydown', (event) => {
+  //   console.log(event.key) // how you identify the name of the key that has been pressed
+  //   if (event.key === 'ArrowRight') {
+  //     if (snake === cells.length - 1) { // what is this doing exactly?  Stopping the snake from going outside the boundry at the end of the array?
+  //       return
+  //     }
+  //     cells[snake].classList.remove('snake')
+  //     snake += 1
+  //     cells[snake].classList.add('snake')
+  //   } else if (event.key === 'ArrowLeft') {
+  //     if (snake === 0) {  //stopping the snake from going out the boundry if it's at the begining of the array
+  //       return
+  //     }
+  //     cells[snake].classList.remove('snake')
+  //     snake -= 1
+  //     cells[snake].classList.add('snake')
+  //   } else if (event.key === 'ArrowUp') {
+  //     if (snake < width) {
+  //       return
+  //     }
+  //     cells[snake].classList.remove('snake')
+  //     snake -= width
+  //     cells[snake].classList.add('snake')
+  //   } else if (event.key === 'ArrowDown') {
+  //     if (snake > cells.length - width - 1) {
+  //       return
+  //     }
+  //     cells[snake].classList.remove('snake')
+  //     snake += width
+  //     cells[snake].classList.add('snake')
+  //   }
+  // })
 
   // cells[food].classList.add('food')
 
