@@ -8,8 +8,8 @@ function setUpNewGame() {
   const cells = []
 
 
-  let snake = [4, 5, 6, 7, 8, 9]
-  let snakeBody = 4  // each time sanke eats, this needs to increase
+  let snake = [0, 1, 2, 3, 4, 5]
+  // let snakeBody = 4  // each time snake eats, this needs to increase.  Think will just use snake now
   let food = 40
   let score = 0
   let playerScore = 0
@@ -33,14 +33,8 @@ function setUpNewGame() {
     snake.forEach((segment) => {
       cells[segment].classList.add('snake')
     })
-    //snake move function
+    //start snake moving code
   })
-
-  // create snake (OLD)
-  // for (let i = 0; i < snakeBody; i++) {
-  //   snake.push(i)
-  //   cells[snake[i]].classList.add('snake')
-  // }
 
 
   // Think about refactoring this using a switch statement
@@ -72,7 +66,6 @@ function setUpNewGame() {
       }, 200)
     }
 
-
     if (event.key === 'ArrowLeft') {
       clearInterval(startInterval)
       clearInterval(rightInterval)
@@ -91,7 +84,6 @@ function setUpNewGame() {
       }, 200)
     }
 
-
     if (event.key === 'ArrowUp') {
       clearInterval(startInterval)
       clearInterval(rightInterval)
@@ -109,7 +101,6 @@ function setUpNewGame() {
         }
       }, 200)
     }
-
 
     if (event.key === 'ArrowDown') {
       clearInterval(startInterval)
@@ -137,16 +128,19 @@ function setUpNewGame() {
   //The length of the snake should grow by one cell
   //The playerScore should increase by 10 points
   //The speed of the snake should increase by x
-  // function eatFood() {
-  //   if (cells.classList.contains('food') && cells.classList.contains('snake')) {
-  //     snake.push('body') //need to add body to snake
-  //     foodGenerator()
-  //     playerScore += 10
-  //     snakeSpeed += 100
-  //   }
+  function eatFood() {
+    if (cells.classList.contains('food') && cells.classList.contains('snake')) {
+      snake.push(snake.length)
+      // foodGenerator()
+      playerScore += 10
+      snakeSpeed += 100
+    }
+  }
 
-  // }
-
+  console.log(snake.length - 1)
+  console.log(snake)
+  console.log(playerScore)
+  console.log(snakeSpeed)
 
   //Collision Detection Function
   //If the snake is minus 0 or greater than 399, then game should end
