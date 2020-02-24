@@ -3,6 +3,8 @@ function setUpNewGame() {
   const gridCellCount = width * width
   const grid = document.querySelector('.grid')
   const startButton = document.querySelector('#start')
+  const playAgainButton = document.querySelector('#play-again')
+  const scoreDisplay = document.querySelector('#score-display')
   const cells = []
 
 
@@ -10,6 +12,8 @@ function setUpNewGame() {
   let snakeBody = 4  // each time sanke eats, this needs to increase
   let food = 40
   let score = 0
+  let playerScore = 0
+  let snakeSpeed = 0
 
 
   for (let i = 0; i < gridCellCount; i++) {
@@ -21,55 +25,23 @@ function setUpNewGame() {
   }
   console.log(cells)
 
-  // create snake
+  // Start Game & Move snake
+  startButton.addEventListener('click', () => {
+    scoreDisplay.innerHTML = ''
+    foodGenerator()
+    // create snake
+    snake.forEach((segment) => {
+      cells[segment].classList.add('snake')
+    })
+    //snake move function
+  })
+
+  // create snake (OLD)
   // for (let i = 0; i < snakeBody; i++) {
   //   snake.push(i)
   //   cells[snake[i]].classList.add('snake')
   // }
 
-
-  snake.forEach((segment) => {
-    cells[segment].classList.add('snake')
-  })
-
-
-
-  // move the snake
-  // let snakeHead = snake.length
-  // let snakeTail = snake[0]
-
-  // console.log(snakeHead)
-  // console.log(snakeTail)
-
-  // console.log(snake)
-  // snake.shift()
-  // console.log(snake)
-  // snake.push(snakeHead)
-  // console.log(snake)
-
-
-  // let t = 0
-  // do {
-  //   console.log(snake)
-  //   snake.shift()
-  //   console.log(snake)
-  //   snake.push(snakeHead)
-  //   console.log(snake)
-  //   t++
-  // }
-  // while (t < 5)
-
-
-  //Start Game & Move snake
-  // startButton.addEventListener('click', () => {
-  //   startInterval = setInterval(() => {
-  //     if (cells[snake].classList.contains('snake')) {
-  //       cells[snake].classList.remove('snake')
-  //       snake += 1
-  //       cells[snake].classList.add('snake')
-  //     }
-  //   }, 200)
-  // })
 
   // Think about refactoring this using a switch statement
   let startInterval
@@ -80,7 +52,6 @@ function setUpNewGame() {
 
   // Snake Movement Keys Logic
   document.addEventListener('keydown', (event) => {
-    // clearInterval(setInterval)
     // console.log(event.key) // how you identify the name of the key that has been pressed //new
     if (event.key === 'ArrowRight') {
       clearInterval(startInterval)
@@ -121,17 +92,25 @@ function setUpNewGame() {
     }
 
 
-    // if (event.key === 'ArrowUp') {
-    //   clearInterval(startInterval)
-    //   clearInterval(rightInterval)
-    //   clearInterval(downInterval)
-    //   clearInterval(leftInterval)
-    //   upInterval = setInterval(() => {
-    //     if (snake < width) {
-    //       return
-    //     }
+    if (event.key === 'ArrowUp') {
+      clearInterval(startInterval)
+      clearInterval(rightInterval)
+      clearInterval(downInterval)
+      clearInterval(leftInterval)
+      clearInterval(upInterval)
+      upInterval = setInterval(() => {
+        if (snake < width) {
+          return
+        }
+        for (let segment = 0; segment < snake.length; segment++) {
+          cells[snake[segment]].classList.remove('snake')
+          snake[segment] -= width
+          cells[snake[segment]].classList.add('snake')
+        }
+      }, 200)
+    }
 
-    // }
+
     if (event.key === 'ArrowDown') {
       clearInterval(startInterval)
       clearInterval(rightInterval)
@@ -151,37 +130,61 @@ function setUpNewGame() {
     }
   })
 
-  cells[food].classList.add('food')
 
-  //if snake in the same square as food, then remove food from square and add new food
-  //if food removed, add 10 points to players score
-  // if (cells.classList.contains('food') && (cells.classList.contains('snake'))) {
-  //   cells.classList.remove('food')
-  //   score += 100
+  //Eat food function
+  //If the same cell has both the snake class (first cell) & the food class, then the food is eaten & the food class should be removed from that cell
+  //The food fuunction should be called, which will generate new food
+  //The length of the snake should grow by one cell
+  //The playerScore should increase by 10 points
+  //The speed of the snake should increase by x
+  // function eatFood() {
+  //   if (cells.classList.contains('food') && cells.classList.contains('snake')) {
+  //     snake.push('body') //need to add body to snake
+  //     foodGenerator()
+  //     playerScore += 10
+  //     snakeSpeed += 100
+  //   }
+
+  // }
+
+
+  //Collision Detection Function
+  //If the snake is minus 0 or greater than 399, then game should end
+  //If snake in top row (0 to 19) or bottom row (380 to 399), then + or minus width should result in game end
+  // If the snake hits itelf, then the game should end
+  //if snake hits boundry, then stop - clearInterval(All)
+  //if snake hits itself, then stop - clearInterval(All)
+  //Game end Function should be called   
+  // function collisionDetection() {
+  //   if ((cells[randomCell()].classList.add('food')) === (cells[food].classList.contains('snake'))) {
+  //     eatFood()
+  //   } else if (code concerning boundy)
   // }
 
 
 
-  //if snake hits boundry, then stop - clearInterval(All)
-  //if snake hits itself, then stop - clearInterval(All)
+  //Food Function
+  //There can only ever be one piece of food on the board at any one time
+  //Food should be randomly placed on the game board, when the existing food has been removed
+  //If the snake occupies a cell, then food cannot be placed on that cell
+  //if ranndom cell class is blank, then add food class.  If not blank run random cell again
+  function foodGenerator() {
+    const randomFood = Math.floor(Math.random() * cells.length)
+    cells[randomFood].classList.add('food')
+    console.log(randomFood)
+  }
+  
+  
+  //End Game Function
+  //Display Game Over sign
+  //Display playerScore
+  //Display Pay again button
 
 
-
-
-
-
-
-  // Food Logic.  For now is set on a timed loop, but will change that to appear at the start and then remain on screen until eaten.  Might actually call t
-  // const foodLogic = setInterval(() => { 
-  //   const randomFood = Math.floor(Math.random() * cells.length)
-  //   console.log(randomFood)
-  //   cells[randomFood].classList.add('food')
-  //   setInterval(() => {
-  //     cells[randomFood].classList.remove('food')
-  //   }, 1000)
-  // }, 1000)
-
-  // foodLogic //used to call and start foodlogic.  why don't i need the brackets?
+  //Play again
+  playAgainButton.addEventListener('click', () => {
+  // call start game function
+  })
 
 }
 

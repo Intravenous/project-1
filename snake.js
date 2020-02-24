@@ -142,9 +142,11 @@ function gameSetup() {
 
 
   //Collision Detection Function
-  //If the same cell has both the snake class (first cell) & the food class, then the food is eaten & the food class should be removed from that cell
   //If the snake is minus 0 or greater than 399, then game should end
   //If snake in top row (0 to 19) or bottom row (380 to 399), then + or minus width should result in game end
+  // If the snake hits itelf, then the game should end
+  //if snake hits boundry, then stop - clearInterval(All)
+  //if snake hits itself, then stop - clearInterval(All)
   //Game end Function should be called   
   // function collisionDetection() {
   //   if ((cells[randomCell()].classList.add('food')) === (cells[food].classList.contains('snake'))) {
