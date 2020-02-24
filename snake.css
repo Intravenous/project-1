@@ -15,8 +15,8 @@ body {
   display: flex;
   flex-direction: row;
   border: 1px solid black;
-  width: 600px;
-  height: 600px;
+  width: 650px;
+  height: 450px;
   flex-wrap: wrap;
 }
 
@@ -29,10 +29,10 @@ body {
 
 .snake {
   background-image: url(./images/snake-head.jpeg);
-  background-size: contain;
+  background-size: cover;
 }
 
 .food {
   background-image: url(./images/food-mouse.jpg);
-  background-size: contain;
+  background-size: cover;
 }

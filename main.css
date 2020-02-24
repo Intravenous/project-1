@@ -15,8 +15,8 @@ body {
   display: flex;
   flex-direction: row;
   border: 1px solid black;
-  width: 600px;
-  height: 600px;
+  width: 600px; /*change to 650*/
+  height: 600px; /*change to 450*/
   flex-wrap: wrap; /*ensures the boxes wrap rather than one line*/
 }
 

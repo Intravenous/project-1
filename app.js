@@ -4,39 +4,72 @@ function setUpNewGame() {
   const grid = document.querySelector('.grid')
   const startButton = document.querySelector('#start')
   const cells = []
-  // const boundry = grid
-  let snake = 3
-  let snakeBody = []
+
+
+  let snake = [4, 5, 6, 7, 8, 9]
+  let snakeBody = 4  // each time sanke eats, this needs to increase
   let food = 40
   let score = 0
 
 
-  // if (boundry === snake)
-
   for (let i = 0; i < gridCellCount; i++) {
-    const cell = document.createElement('div')
-    cell.classList.add('cell')
+    const cell = document.createElement('div') //create a div in a variable of cell
+    cell.classList.add('cell') //for each cell (div), add the class of cell
     // cell.innerHTML = i  // view grid numbers
-    grid.appendChild(cell)
-    cells.push(cell)
+    grid.appendChild(cell) //add the div's (each cell) to the div grid
+    cells.push(cell)  //push each div (cell) into the cells array
   }
-
   console.log(cells)
 
-  //Snake starting position
-  cells[snake].classList.add('snake')
+  // create snake
+  // for (let i = 0; i < snakeBody; i++) {
+  //   snake.push(i)
+  //   cells[snake[i]].classList.add('snake')
+  // }
 
-  
-  //Start Game & Move snake
-  startButton.addEventListener('click', () => {
-    startInterval = setInterval(() => {
-      if (cells[snake].classList.contains('snake')) {
-        cells[snake].classList.remove('snake')
-        snake += 1
-        cells[snake].classList.add('snake')
-      }
-    }, 200)
+
+  snake.forEach((segment) => {
+    cells[segment].classList.add('snake')
   })
+
+
+
+  // move the snake
+  // let snakeHead = snake.length
+  // let snakeTail = snake[0]
+
+  // console.log(snakeHead)
+  // console.log(snakeTail)
+
+  // console.log(snake)
+  // snake.shift()
+  // console.log(snake)
+  // snake.push(snakeHead)
+  // console.log(snake)
+
+
+  // let t = 0
+  // do {
+  //   console.log(snake)
+  //   snake.shift()
+  //   console.log(snake)
+  //   snake.push(snakeHead)
+  //   console.log(snake)
+  //   t++
+  // }
+  // while (t < 5)
+
+
+  //Start Game & Move snake
+  // startButton.addEventListener('click', () => {
+  //   startInterval = setInterval(() => {
+  //     if (cells[snake].classList.contains('snake')) {
+  //       cells[snake].classList.remove('snake')
+  //       snake += 1
+  //       cells[snake].classList.add('snake')
+  //     }
+  //   }, 200)
+  // })
 
   // Think about refactoring this using a switch statement
   let startInterval
@@ -54,80 +87,78 @@ function setUpNewGame() {
       clearInterval(leftInterval)
       clearInterval(downInterval)
       clearInterval(upInterval)
+      clearInterval(rightInterval)
       rightInterval = setInterval(() => {
         if (snake === cells.length - 1) {
           return
         }
-        cells[snake].classList.remove('snake')
-        snake += 1
-        cells[snake].classList.add('snake')
+
+        for (let segment = snake.length - 1; segment >= 0; --segment) {
+          cells[snake[segment]].classList.remove('snake')
+          snake[segment] += 1
+          cells[snake[segment]].classList.add('snake')
+        }
       }, 200)
     }
+
+
     if (event.key === 'ArrowLeft') {
       clearInterval(startInterval)
       clearInterval(rightInterval)
       clearInterval(downInterval)
       clearInterval(upInterval)
+      clearInterval(leftInterval)
       leftInterval = setInterval(() => {
         if (snake === 0) {
           return
         }
-        cells[snake].classList.remove('snake')
-        snake -= 1
-        cells[snake].classList.add('snake')
-      }, 200)
-    }
-    if (event.key === 'ArrowUp') {
-      clearInterval(startInterval)
-      clearInterval(rightInterval)
-      clearInterval(downInterval)
-      clearInterval(leftInterval)
-      upInterval = setInterval(() => {
-        if (snake < width) {
-          return
+        for (let segment = 0; segment < snake.length; segment++) {
+          cells[snake[segment]].classList.remove('snake')
+          snake[segment] -= 1
+          cells[snake[segment]].classList.add('snake')
         }
-        cells[snake].classList.remove('snake')
-        snake -= width
-        cells[snake].classList.add('snake')
       }, 200)
     }
+
+
+    // if (event.key === 'ArrowUp') {
+    //   clearInterval(startInterval)
+    //   clearInterval(rightInterval)
+    //   clearInterval(downInterval)
+    //   clearInterval(leftInterval)
+    //   upInterval = setInterval(() => {
+    //     if (snake < width) {
+    //       return
+    //     }
+
+    // }
     if (event.key === 'ArrowDown') {
       clearInterval(startInterval)
       clearInterval(rightInterval)
       clearInterval(upInterval)
       clearInterval(leftInterval)
+      clearInterval(downInterval)
       downInterval = setInterval(() => {
         if (snake > cells.length - width - 1) {
           return
         }
-        cells[snake].classList.remove('snake')
-        snake += width
-        cells[snake].classList.add('snake')
+        for (let segment = snake.length - 1; segment >= 0; --segment) {
+          cells[snake[segment]].classList.remove('snake')
+          snake[segment] += width
+          cells[snake[segment]].classList.add('snake')
+        }
       }, 200)
     }
   })
-
-  ///////////////example/////////////
-  for (let i = 0; i < gridCellCount; i++) {
-    const cell = document.createElement('div')
-    cells.push(cell)
-    cell.addEventListener('click', () => {
-      if (cell.classList.contains('mole')) {
-        score += 100
-        cell.classList.remove('mole')
-      }
-    })
-    grid.appendChild(cell)
-  }
 
   cells[food].classList.add('food')
 
   //if snake in the same square as food, then remove food from square and add new food
   //if food removed, add 10 points to players score
-  if (cells.classList.contains('food') && (cells.classList.contains('snake'))) {
-    cells.classList.remove('food')
-    score += 100
-  }
+  // if (cells.classList.contains('food') && (cells.classList.contains('snake'))) {
+  //   cells.classList.remove('food')
+  //   score += 100
+  // }
 
 
 
@@ -136,7 +167,7 @@ function setUpNewGame() {
 
 
 
- 
+
 
 
 

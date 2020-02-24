@@ -4,37 +4,27 @@ function gameSetup() {
   const gridCellCount = width * width
   const grid = document.querySelector('.grid')
   const startButton = document.querySelector('#start')
+  const playAgainButton = document.querySelector('#play-again')
+  const scoreDisplay = document.querySelector('#score-display')
   const cells = []
 
   // Game Variables
-  // let snake = [{ x: 0, y: 1 }]
-  let snake = 0
+  let snake = []
+  let snakeBody = 4  // each time sanke eats, this needs to increase
   let food = 219
   let playerScore = 0
   let snakeSpeed = 0
-
 
 
   //Create Grid (Game Board)
   for (let i = 0; i < gridCellCount; i++) {
     const cell = document.createElement('div')
     cell.classList.add('cell')
-    cell.innerHTML = i  // view grid numbers
+    cell.id = i + 1
+    // cell.innerHTML = i  // view grid numbers
     grid.appendChild(cell)
     cells.push(cell)
   }
-
-  //Create Random cell Number
-  function randomCell() {
-    const randomNumber = Math.floor(Math.random() * cells.length)
-    // const randomNumber = 18 //to test out function
-    console.log(randomNumber)
-    return randomNumber
-  }
-  // randomCell()
-  // console.log(randomCell())
-
-  console.log(snake)
 
 
   //Start the game and set the board up
@@ -44,11 +34,30 @@ function gameSetup() {
   startButton.addEventListener('click', () => {
     foodGenerator()
     cells[snake].classList.add('snake')
+    //function to make the snake move
   })
+
+
+  // // Generate snake
+  // create snake
+  for (let i = 0; i < snakeBody; i++) {
+    snake.push(i)
+    cells[snake[i]].classList.add('snake')
+  }
+
 
   //Snake creation and movement code
   //Not sure if that will be in a function at the moment, but likley to be
   //The snake is always moving forward
+  // cells[190].style.background = 'red'
+  // cells[snake].classList.add('snake')
+  // snake.pop()
+  // snake.unshift(snakeHead)
+  // for (let i = 3; i >= 0; i -- ) {
+  //   snake.push( { x: i, y: 0 })
+  // }
+
+  //Player control of snake
   //The snake can be moved up, down left and right usiing the arrow keys
   //Snake to move right is += 1, left -= 1, up += width & down -= width
   //if (snake === 0) { return } - can't move out of grid on the left first cell
@@ -59,7 +68,7 @@ function gameSetup() {
   //if (snake > cells.length - width - 1) { return } - can't move out of grid on the right row
   //if (snake > cells.length - width - 1) { return } - can't move out of grid on the left row
   document.addEventListener('keydown', (event) => {
-    // console.log(event.key) // how you identify the name of the key that has been pressed //new
+    console.log(event.key) // how you identify the name of the key that has been pressed //new
     if (event.key === 'ArrowRight') {
       if (snake === cells.length - 1) {
         return
@@ -91,13 +100,25 @@ function gameSetup() {
     }
   })
 
+  //Create Random cell Number
+  function randomCell() {
+    const randomNumber = Math.floor(Math.random() * cells.length)
+    // const randomNumber = 18 //to test out function
+    console.log(randomNumber)
+    return randomNumber
+  }
+  // randomCell()
+  // console.log(randomCell())
+
+
   //Food Function
   //There can only ever be one piece of food on the board at any one time
   //Food should be randomly placed on the game board, when the existing food has been removed
   //If the snake occupies a cell, then food cannot be placed on that cell
+  //if ranndom cell class is blank, then add food class.  If not blank run random cell again
   function foodGenerator() {
-    if (cells[food].classList.contains('snake')) { //don't think this works properly.  i.e. doesn't prevent food being randomly put in a cell if snake is already on that cell
-      return
+    if (cells[randomCell()].classList.contains('snake')) { //don't think this works properly.  i.e. doesn't prevent food being randomly put in a cell if snake is already on that cell.  How would I de-bug this?
+      randomCell()
     }
     (cells[randomCell()].classList.add('food'))
   }
@@ -110,10 +131,13 @@ function gameSetup() {
   //The playerScore should increase by 10 points
   //The speed of the snake should increase by x
   function eatFood() {
-    foodGenerator()
-    snake.push('body') //need to add body to snake
-    playerScore += 10
-    snakeSpeed += 100
+    if (cells.classList.contains('food') && cells.classList.contains('snake')) {
+      snake.push('body') //need to add body to snake
+      foodGenerator()
+      playerScore += 10
+      snakeSpeed += 100
+    }
+
   }
 
 
@@ -122,16 +146,26 @@ function gameSetup() {
   //If the snake is minus 0 or greater than 399, then game should end
   //If snake in top row (0 to 19) or bottom row (380 to 399), then + or minus width should result in game end
   //Game end Function should be called   
-  function collisionDetection() {
-    if ((cells[randomCell()].classList.add('food')) === (cells[food].classList.contains('snake'))) {
-      eatFood()
-    } else if (code concerning boundy)
-  }
+  // function collisionDetection() {
+  //   if ((cells[randomCell()].classList.add('food')) === (cells[food].classList.contains('snake'))) {
+  //     eatFood()
+  //   } else if (code concerning boundy)
+  // }
+
 
   //End Game Function
   //Display Game Over sign
   //Display playerScore
   //Display Pay again button
+
+
+  //Play again
+  playAgainButton.addEventListener('click', () => {
+    scoreDisplay.innerHTML = ''
+    foodGenerator()
+    cells[snake].classList.add('snake')
+    //snake move function
+  })
 
   console.log(cells)
 
