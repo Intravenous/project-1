@@ -8,7 +8,7 @@ function setUpNewGame() {
   const cells = []
 
 
-  let snake = [0, 1, 2, 3, 4, 5]
+  let snake = [0, 1, 2, 3, 4]
   // let snakeBody = 4  // each time snake eats, this needs to increase.  Think will just use snake now
   let food = 40
   let score = 0
@@ -23,18 +23,18 @@ function setUpNewGame() {
     grid.appendChild(cell) //add the div's (each cell) to the div grid
     cells.push(cell)  //push each div (cell) into the cells array
   }
-  console.log(cells)
+  // console.log(cells)
 
   // Start Game & Move snake
+  // function StartGame() { // How do I put this in a function so that it can be called by the playAgain button?
   startButton.addEventListener('click', () => {
     scoreDisplay.innerHTML = ''
     foodGenerator()
-    // create snake
     snake.forEach((segment) => {
       cells[segment].classList.add('snake')
     })
-    //start snake moving code
   })
+  // }
 
 
   // Think about refactoring this using a switch statement
@@ -46,8 +46,8 @@ function setUpNewGame() {
 
   // Snake Movement Keys Logic
   document.addEventListener('keydown', (event) => {
-    // console.log(event.key) // how you identify the name of the key that has been pressed //new
     if (event.key === 'ArrowRight') {
+      console.log(snake)
       clearInterval(startInterval)
       clearInterval(leftInterval)
       clearInterval(downInterval)
@@ -57,12 +57,13 @@ function setUpNewGame() {
         if (snake === cells.length - 1) {
           return
         }
-
-        for (let segment = snake.length - 1; segment >= 0; --segment) {
-          cells[snake[segment]].classList.remove('snake')
-          snake[segment] += 1
+        cells[snake[0]].classList.remove('snake')
+        for (let segment = 0; segment < snake.length - 1; segment++) {
+          snake[segment] = snake[segment + 1]
           cells[snake[segment]].classList.add('snake')
         }
+        snake[snake.length - 1] += 1
+        cells[snake[snake.length - 1]].classList.add('snake')
       }, 200)
     }
 
@@ -76,11 +77,18 @@ function setUpNewGame() {
         if (snake === 0) {
           return
         }
-        for (let segment = 0; segment < snake.length; segment++) {
-          cells[snake[segment]].classList.remove('snake')
-          snake[segment] -= 1
+        // for (let segment = 0; segment < snake.length; segment++) {
+        //   cells[snake[segment]].classList.remove('snake')
+        //   snake[segment] -= 1
+        //   cells[snake[segment]].classList.add('snake')
+        // }
+        cells[snake[0]].classList.remove('snake')
+        for (let segment = 0; segment < snake.length - 1; segment++) {
+          snake[segment] = snake[segment + 1]
           cells[snake[segment]].classList.add('snake')
         }
+        snake[snake.length - 1] -= 1
+        cells[snake[snake.length - 1]].classList.add('snake')
       }, 200)
     }
 
@@ -94,11 +102,18 @@ function setUpNewGame() {
         if (snake < width) {
           return
         }
-        for (let segment = 0; segment < snake.length; segment++) {
-          cells[snake[segment]].classList.remove('snake')
-          snake[segment] -= width
+        // for (let segment = 0; segment < snake.length; segment++) {
+        //   cells[snake[segment]].classList.remove('snake')
+        //   snake[segment] -= width
+        //   cells[snake[segment]].classList.add('snake')
+        // }
+        cells[snake[0]].classList.remove('snake')
+        for (let segment = 0; segment < snake.length - 1; segment++) {
+          snake[segment] = snake[segment + 1]
           cells[snake[segment]].classList.add('snake')
         }
+        snake[snake.length - 1] -= width
+        cells[snake[snake.length - 1]].classList.add('snake')
       }, 200)
     }
 
@@ -112,11 +127,18 @@ function setUpNewGame() {
         if (snake > cells.length - width - 1) {
           return
         }
-        for (let segment = snake.length - 1; segment >= 0; --segment) {
-          cells[snake[segment]].classList.remove('snake')
-          snake[segment] += width
+        // for (let segment = snake.length - 1; segment >= 0; --segment) {
+        //   cells[snake[segment]].classList.remove('snake')
+        //   snake[segment] += width
+        //   cells[snake[segment]].classList.add('snake')
+        // }
+        cells[snake[0]].classList.remove('snake')
+        for (let segment = 0; segment < snake.length - 1; segment++) {
+          snake[segment] = snake[segment + 1]
           cells[snake[segment]].classList.add('snake')
         }
+        snake[snake.length - 1] += width
+        cells[snake[snake.length - 1]].classList.add('snake')
       }, 200)
     }
   })
@@ -139,8 +161,8 @@ function setUpNewGame() {
 
   console.log(snake.length - 1)
   console.log(snake)
-  console.log(playerScore)
-  console.log(snakeSpeed)
+  // console.log(playerScore)
+  // console.log(snakeSpeed)
 
   //Collision Detection Function
   //If the snake is minus 0 or greater than 399, then game should end
@@ -167,8 +189,8 @@ function setUpNewGame() {
     cells[randomFood].classList.add('food')
     console.log(randomFood)
   }
-  
-  
+
+
   //End Game Function
   //Display Game Over sign
   //Display playerScore
@@ -177,7 +199,7 @@ function setUpNewGame() {
 
   //Play again
   playAgainButton.addEventListener('click', () => {
-  // call start game function
+    // startButton()
   })
 
 }
