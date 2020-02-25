@@ -9,8 +9,6 @@ function setUpNewGame() {
 
 
   let snake = [22, 23, 24, 25, 26]
-  const snakehead = [0]
-  // let snakeBody = 4  // each time snake eats, this needs to increase.  Think will just use snake now
   let food = 40
   let score = 0
   let playerScore = 0
@@ -24,7 +22,6 @@ function setUpNewGame() {
     grid.appendChild(cell) //add the div's (each cell) to the div grid
     cells.push(cell)  //push each div (cell) into the cells array
   }
-  // console.log(cells)
 
   // Start Game
   // function StartGame() { // How do I put this in a function so that it can be called by the playAgain button?
@@ -46,10 +43,9 @@ function setUpNewGame() {
   let downInterval
 
   // Snake Movement Keys Logic
-  //BUG -  SHOULD NOT BE ABLE TO GO BACK ON YOURSELF//
+  //BUG -  SHOULD NOT BE ABLE TO GO BACK ON YOURSELF//  Trying to add if (event.key === 'ArrowLeft') then return
   document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowRight') {
-      console.log(snake)
       clearInterval(startInterval)
       clearInterval(leftInterval)
       clearInterval(downInterval)
@@ -59,6 +55,7 @@ function setUpNewGame() {
         if (snake === cells.length - 1) {
           return
         }
+        
         cells[snake[0]].classList.remove('snake')
         for (let segment = 0; segment < snake.length - 1; segment++) {
           snake[segment] = snake[segment + 1]
@@ -104,11 +101,7 @@ function setUpNewGame() {
         if (snake < width) {
           return
         }
-        // for (let segment = 0; segment < snake.length; segment++) {
-        //   cells[snake[segment]].classList.remove('snake')
-        //   snake[segment] -= width
-        //   cells[snake[segment]].classList.add('snake')
-        // }
+
         cells[snake[0]].classList.remove('snake')
         for (let segment = 0; segment < snake.length - 1; segment++) {
           snake[segment] = snake[segment + 1]
@@ -145,36 +138,42 @@ function setUpNewGame() {
     }
   })
 
-
+  //Food Function
+  function foodGenerator() {
+    const randomFood = Math.floor(Math.random() * cells.length)
+    if (cells[randomFood].classList.contains('snake')) {
+      foodGenerator()
+    } else {
+      cells[randomFood].classList.add('food')
+    }
+    food = randomFood
+  }
 
   //Eat food function
-  //If the same cell has both the snake class (first cell) & the food class, then the food is eaten & the food class should be removed from that cell
-  //The food fuunction should be called, which will generate new food
-  //The length of the snake should grow by one cell
-  //The playerScore should increase by 10 points
-  //The speed of the snake should increase by x
   setInterval(() => {
-    // console.log(snake[0])
     // if (cells[snake].classList.contains('food')) {
     if (cells[snake[snake.length - 1]].classList.contains('food')) {
       cells[snake[snake.length - 1]].classList.remove('food')
-      // console.log(snake)
       snake.unshift(snake[0] - 1)
       console.log(snake)
       foodGenerator()
+      //The playerScore should increase by 10 points
+      //The speed of the snake should increase by x
       playerScore += 10
       snakeSpeed += 100
     }
   }, 100)
 
-  // eatFood()
-
-  console.log(snake)
+  // console.log(snake)
   // console.log(playerScore)
   // console.log(snakeSpeed)
 
+  //Collision Detection Function Snake
+  // if (cells[snake[snake.length - 1]].classList.contains('snake')) {
+  if (cells[snake[snake.length - 1]] === snake[0]) {
+    console.log('Game Over')
+  }
 
-  // console.log(cells)
 
   //Collision Detection Function
   //If the snake is minus 0 or greater than 399, then game should end
@@ -188,19 +187,7 @@ function setUpNewGame() {
   //     eatFood()
   //   } else if (code concerning boundy)
   // }
-
-
-  //Food Function
-  function foodGenerator() {
-    const randomFood = Math.floor(Math.random() * cells.length)
-    if (cells[randomFood].classList.contains('snake')) {
-      foodGenerator()
-    } else {
-      cells[randomFood].classList.add('food')
-    }
-    food = randomFood
-  }
-
+  
 
   //End Game Function
   //Display Game Over sign
