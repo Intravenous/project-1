@@ -8,7 +8,8 @@ function setUpNewGame() {
   const cells = []
 
 
-  let snake = [0, 1, 2, 3, 4]
+  let snake = [22, 23, 24, 25, 26]
+  const snakehead = [0]
   // let snakeBody = 4  // each time snake eats, this needs to increase.  Think will just use snake now
   let food = 40
   let score = 0
@@ -25,7 +26,7 @@ function setUpNewGame() {
   }
   // console.log(cells)
 
-  // Start Game & Move snake
+  // Start Game
   // function StartGame() { // How do I put this in a function so that it can be called by the playAgain button?
   startButton.addEventListener('click', () => {
     scoreDisplay.innerHTML = ''
@@ -45,6 +46,7 @@ function setUpNewGame() {
   let downInterval
 
   // Snake Movement Keys Logic
+  //BUG -  SHOULD NOT BE ABLE TO GO BACK ON YOURSELF//
   document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowRight') {
       console.log(snake)
@@ -144,25 +146,35 @@ function setUpNewGame() {
   })
 
 
+
   //Eat food function
   //If the same cell has both the snake class (first cell) & the food class, then the food is eaten & the food class should be removed from that cell
   //The food fuunction should be called, which will generate new food
   //The length of the snake should grow by one cell
   //The playerScore should increase by 10 points
   //The speed of the snake should increase by x
-  function eatFood() {
-    if (cells.classList.contains('food') && cells.classList.contains('snake')) {
-      snake.push(snake.length)
-      // foodGenerator()
+  setInterval(() => {
+    // console.log(snake[0])
+    // if (cells[snake].classList.contains('food')) {
+    if (cells[snake[snake.length - 1]].classList.contains('food')) {
+      cells[snake[snake.length - 1]].classList.remove('food')
+      // console.log(snake)
+      snake.unshift(snake[0] - 1)
+      console.log(snake)
+      foodGenerator()
       playerScore += 10
       snakeSpeed += 100
     }
-  }
+  }, 100)
 
-  console.log(snake.length - 1)
+  // eatFood()
+
   console.log(snake)
   // console.log(playerScore)
   // console.log(snakeSpeed)
+
+
+  // console.log(cells)
 
   //Collision Detection Function
   //If the snake is minus 0 or greater than 399, then game should end
@@ -178,16 +190,15 @@ function setUpNewGame() {
   // }
 
 
-
   //Food Function
-  //There can only ever be one piece of food on the board at any one time
-  //Food should be randomly placed on the game board, when the existing food has been removed
-  //If the snake occupies a cell, then food cannot be placed on that cell
-  //if ranndom cell class is blank, then add food class.  If not blank run random cell again
   function foodGenerator() {
     const randomFood = Math.floor(Math.random() * cells.length)
-    cells[randomFood].classList.add('food')
-    console.log(randomFood)
+    if (cells[randomFood].classList.contains('snake')) {
+      foodGenerator()
+    } else {
+      cells[randomFood].classList.add('food')
+    }
+    food = randomFood
   }
 
 
