@@ -6,6 +6,7 @@ function setUpNewGame() {
   const playAgainButton = document.querySelector('#play-again')
   const scoreDisplay = document.querySelector('#score-display')
   const cells = []
+  
 
 
   let snake = [22, 23, 24, 25, 26]
@@ -41,9 +42,12 @@ function setUpNewGame() {
   let leftInterval
   let upInterval
   let downInterval
+  let setIntervalSnakeSpeed = 200
+  let snakeDirection = 'right'
+
 
   // Snake Movement Keys Logic
-  //BUG -  SHOULD NOT BE ABLE TO GO BACK ON YOURSELF//  Trying to add if (event.key === 'ArrowLeft') then return
+  //BUG -  SHOULD NOT BE ABLE TO GO BACK ON YOURSELF
   document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowRight') {
       clearInterval(startInterval)
@@ -54,7 +58,11 @@ function setUpNewGame() {
       rightInterval = setInterval(() => {
         if (snake === cells.length - 1) {
           return
-        }
+        } /////////////Below doesn't work
+        // if (snake[snake.length - 1] === snake[snake.length - 1]) {
+        //   console.log(snake)
+        //   console.log('Game Over')
+        // }
         
         cells[snake[0]].classList.remove('snake')
         for (let segment = 0; segment < snake.length - 1; segment++) {
@@ -63,7 +71,7 @@ function setUpNewGame() {
         }
         snake[snake.length - 1] += 1
         cells[snake[snake.length - 1]].classList.add('snake')
-      }, 200)
+      }, setIntervalSnakeSpeed)
     }
 
     if (event.key === 'ArrowLeft') {
@@ -76,11 +84,7 @@ function setUpNewGame() {
         if (snake === 0) {
           return
         }
-        // for (let segment = 0; segment < snake.length; segment++) {
-        //   cells[snake[segment]].classList.remove('snake')
-        //   snake[segment] -= 1
-        //   cells[snake[segment]].classList.add('snake')
-        // }
+
         cells[snake[0]].classList.remove('snake')
         for (let segment = 0; segment < snake.length - 1; segment++) {
           snake[segment] = snake[segment + 1]
@@ -88,7 +92,7 @@ function setUpNewGame() {
         }
         snake[snake.length - 1] -= 1
         cells[snake[snake.length - 1]].classList.add('snake')
-      }, 200)
+      }, setIntervalSnakeSpeed)
     }
 
     if (event.key === 'ArrowUp') {
@@ -109,7 +113,7 @@ function setUpNewGame() {
         }
         snake[snake.length - 1] -= width
         cells[snake[snake.length - 1]].classList.add('snake')
-      }, 200)
+      }, setIntervalSnakeSpeed)
     }
 
     if (event.key === 'ArrowDown') {
@@ -122,11 +126,7 @@ function setUpNewGame() {
         if (snake > cells.length - width - 1) {
           return
         }
-        // for (let segment = snake.length - 1; segment >= 0; --segment) {
-        //   cells[snake[segment]].classList.remove('snake')
-        //   snake[segment] += width
-        //   cells[snake[segment]].classList.add('snake')
-        // }
+
         cells[snake[0]].classList.remove('snake')
         for (let segment = 0; segment < snake.length - 1; segment++) {
           snake[segment] = snake[segment + 1]
@@ -134,7 +134,7 @@ function setUpNewGame() {
         }
         snake[snake.length - 1] += width
         cells[snake[snake.length - 1]].classList.add('snake')
-      }, 200)
+      }, setIntervalSnakeSpeed)
     }
   })
 
@@ -151,7 +151,7 @@ function setUpNewGame() {
 
   //Eat food function
   setInterval(() => {
-    // if (cells[snake].classList.contains('food')) {
+
     if (cells[snake[snake.length - 1]].classList.contains('food')) {
       cells[snake[snake.length - 1]].classList.remove('food')
       snake.unshift(snake[0] - 1)
@@ -159,16 +159,19 @@ function setUpNewGame() {
       foodGenerator()
       //The playerScore should increase by 10 points
       //The speed of the snake should increase by x
+      setIntervalSnakeSpeed -= 10
       playerScore += 10
-      snakeSpeed += 100
     }
   }, 100)
+
+  
 
   // console.log(snake)
   // console.log(playerScore)
   // console.log(snakeSpeed)
 
-  //Collision Detection Function Snake
+  // Collision Detection Function Snake
+  // Snake head [0] needs to hit another cell whithin the snake
   // if (cells[snake[snake.length - 1]].classList.contains('snake')) {
   if (cells[snake[snake.length - 1]] === snake[0]) {
     console.log('Game Over')
