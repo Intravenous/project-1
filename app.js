@@ -39,11 +39,12 @@ function setUpNewGame() {
 
   // when the statement is true, the snake has hit itself and so i need to end the game from there
   const snakeAttack = function () {
-
     console.log(cells[snake[snake.length - 1]])
-
     console.log((new Set(snake).size) !== snake.length)
-
+    if ((new Set(snake).size) !== snake.length) {
+      // console.log('Have I actully done something?')
+      gameOver()
+    }
     // snake.includes((element) => {
     //   if (cells[snake[snake.length - 1]] === element) {
     //     console.log('you have bumped into yourself you big eejit')
@@ -254,14 +255,13 @@ function setUpNewGame() {
   //Display Game Over sign
   //Display Pay again button
   function gameOver() {
-    clearInterval(startInterval)
-    clearInterval(rightInterval)
-    clearInterval(leftInterval)
-    clearInterval(downInterval)
-    clearInterval(upInterval)
+    // clearInterval(startInterval)
+    // clearInterval(rightInterval)
+    // clearInterval(leftInterval)
+    // clearInterval(downInterval)
+    // clearInterval(upInterval)
     alert(`Game Over!! You Scored ${playerScore}`)
   }
-
 
   //Play again
   playAgainButton.addEventListener('click', () => {
