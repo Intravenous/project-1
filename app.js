@@ -11,7 +11,6 @@ function setUpNewGame() {
   const munch = new Audio()
   munch.src = 'sounds/Cartoon-crunching-bite.mp3'
   // munch.volume between 0 - 1
-  // const leftwall = [19, 39, 59, 79, 99, 119]
 
   let food
   let snake = [22, 23, 24, 25, 26]
@@ -29,12 +28,13 @@ function setUpNewGame() {
   // Start Game
   // function StartGame() { // How do I put this in a function so that it can be called by the playAgain button?
   startButton.addEventListener('click', () => {
-    scoreDisplay.innerHTML = 0
+    // location.reload()
+    startButton.style.display = 'none'
+    // scoreDisplay.innerHTML = 0
     foodGenerator()
     snake.forEach((segment) => {
       cells[segment].classList.add('snake')
     })
-    // cells[snake[snake.length - 1]].classList.add('snakeHead')
   })
   // }
 
@@ -130,17 +130,14 @@ function setUpNewGame() {
         return
       }
       snakeDirection = 'up'
-      // direction = snakeDirection[2]
-      // console.log(direction)
+
       clearInterval(startInterval)
       clearInterval(rightInterval)
       clearInterval(downInterval)
       clearInterval(leftInterval)
       clearInterval(upInterval)
       upInterval = setInterval(() => {
-        // if (snake < width) {
-        //   return
-        // }
+
         if (snake[snake.length - 1] <= 19) {
           cells[snake[0]].classList.remove('snake')
           for (let segment = 0; segment < snake.length - 1; segment++) {
@@ -158,7 +155,7 @@ function setUpNewGame() {
           snake[snake.length - 1] -= width
           cells[snake[snake.length - 1]].classList.add('snake')
           snakeAttack()
-  
+
         }
       }, setIntervalSnakeSpeed)
     }
@@ -176,9 +173,7 @@ function setUpNewGame() {
       clearInterval(leftInterval)
       clearInterval(downInterval)
       downInterval = setInterval(() => {
-        // if (snake > cells.length - width - 1) {
-        //   return
-        // }
+
 
         if (snake[snake.length - 1] >= 380) { // width === x position //here removed -1
           cells[snake[0]].classList.remove('snake')
@@ -229,9 +224,9 @@ function setUpNewGame() {
       foodGenerator()
       setIntervalSnakeSpeed -= 10
       playerScore += 10
-      scoreDisplay.innerHTML = playerScore
+      // scoreDisplay.innerHTML = playerScore
     }
-  }, 50)
+  }, 30)
 
 
   // Snake Collision Detection
@@ -261,9 +256,9 @@ function setUpNewGame() {
 
 
   //Play again
-  playAgainButton.addEventListener('click', () => {
-    // startButton()
-  })
+  // playAgainButton.addEventListener('click', () => {
+  //   location.reload()
+  // })
 
 }
 

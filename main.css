@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 
-main, body {
+main body {
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -10,43 +10,54 @@ main, body {
   align-items: center;
   flex-direction: column;
   margin: 0;
-  
 }
-/* 
+
 main {
+  height: 100vh;
+  /* width: 50vw; */
   background-image: url(./images/nokia-graphic.png);
-  background-size: cover;
-} */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: 60%;
+  display: flex;
+  align-items: center;  
+  flex-direction: column;
+}
 
 .grid {
   display: flex;
   flex-direction: row;
-  border: 3px dashed rgba(66, 63, 63, 0.863);
-  width: 550px; /*change to 650 - Original 600px*/
-  height: 350px; /*change to 450 - Original 600px*/
+  /* border: 3px dashed rgba(66, 63, 63, 0.863); */
+  width: 550px;
+  height: 380px;
   flex-wrap: wrap; /*ensures the boxes wrap rather than one line*/
+  border-radius: 25;
 }
 
 .cell {
   width: 5%; /*need to change width & height if width size of grid changes in app.js*/
   height: 5%;
-  border: 1px solid green;
+  /* border: 1px solid green; */
   background-color: #b1e425ea;
 }
 
 .snake {
-  /* background-image: url(./images/snake-head.jpeg); */
   background-image: url(./images/snakeBlock.png);
   background-size: contain;
 }
 
 .food {
-  /* background-image: url(./images/food-mouse.jpg); */
   background-image: url(./images/mouse.png);
   background-size: contain;
   background-repeat: no-repeat;
 }
 
+button {
+  background-color: #1acbf4;
+  width: 115px;
+  border-radius: 25px;
+}
 /*setup for Bulma*/
 .is-horizontal-center {
   justify-content: center;
