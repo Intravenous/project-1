@@ -6,7 +6,7 @@ function setUpNewGame() {
   const playAgainButton = document.querySelector('#play-again')
   const scoreDisplay = document.querySelector('#score-display')
   const cells = []
-
+  let snakeDirection = ''
 
   let food
   let snake = [22, 23, 24, 25, 26]
@@ -15,11 +15,11 @@ function setUpNewGame() {
 
 
   for (let i = 0; i < gridCellCount; i++) {
-    const cell = document.createElement('div') //create a div in a variable of cell
-    cell.classList.add('cell') //for each cell (div), add the class of cell
+    const cell = document.createElement('div')
+    cell.classList.add('cell')
     // cell.innerHTML = i  // view grid numbers
-    grid.appendChild(cell) //add the div's (each cell) to the div grid
-    cells.push(cell)  //push each div (cell) into the cells array
+    grid.appendChild(cell)
+    cells.push(cell)
   }
 
   // Start Game
@@ -36,23 +36,30 @@ function setUpNewGame() {
 
   // console.log(cells[snake[snake.length - 1]])
 
-
+  // Snake Collision Detection
+  // If the snake hits itelf, then the game should end
   // when the statement is true, the snake has hit itself and so i need to end the game from there
   const snakeAttack = function () {
     console.log(cells[snake[snake.length - 1]])
     console.log((new Set(snake).size) !== snake.length)
     if ((new Set(snake).size) !== snake.length) {
-      // console.log('Have I actully done something?')
+      console.log('Is this working?')
       gameOver()
     }
-    // snake.includes((element) => {
-    //   if (cells[snake[snake.length - 1]] === element) {
-    //     console.log('you have bumped into yourself you big eejit')
-    //   }
   }
-  //   )
-  // }
 
+  //End Game Function
+  //Display Game Over sign
+  //Display Pay again button
+  function gameOver() {
+    clearInterval(startInterval)
+    clearInterval(rightInterval)
+    clearInterval(leftInterval)
+    clearInterval(downInterval)
+    clearInterval(upInterval)
+    alert(`Game Over!! You Scored ${playerScore}`)
+    return
+  }
 
   //Mike's example to show me working it.  Not required
   // setInterval (() => {
@@ -68,18 +75,18 @@ function setUpNewGame() {
   let upInterval
   let downInterval
   let setIntervalSnakeSpeed = 200
-  const snakeDirection = ['right', 'left', 'up', 'down']
+  // const snakeDirection = ['right', 'left', 'up', 'down']
   let direction
 
   // Snake Movement Keys Logic
   //BUG -  SHOULD NOT BE ABLE TO GO BACK ON YOURSELF
   document.addEventListener('keydown', (event) => {
-    snakeAttack()
     if (event.key === 'ArrowRight') {
       if (snakeDirection === 'left') {
         return
       }
-      direction = snakeDirection[0]
+      snakeDirection = 'right'
+      // direction = snakeDirection[0]
       // console.log(direction)
       clearInterval(startInterval)
       clearInterval(leftInterval)
@@ -94,7 +101,6 @@ function setUpNewGame() {
         //   console.log(snake)
         //   console.log('Game Over')
         // }
-
         cells[snake[0]].classList.remove('snake')
         for (let segment = 0; segment < snake.length - 1; segment++) {
           snake[segment] = snake[segment + 1]
@@ -102,18 +108,20 @@ function setUpNewGame() {
         }
         snake[snake.length - 1] += 1
         cells[snake[snake.length - 1]].classList.add('snake')
+        snakeAttack()
       }, setIntervalSnakeSpeed)
     }
 
     if (event.key === 'ArrowLeft') {
-      snakeAttack()
+
       if (snakeDirection === 'right') {
         return
       }
       // if (event.key === 'ArrowLeft') && (snakeDirection === 'right') {
       //     return
       //   }
-      direction = snakeDirection[1]
+      snakeDirection = 'left'
+      // direction = snakeDirection[1]
       // console.log(direction)
       clearInterval(startInterval)
       clearInterval(rightInterval)
@@ -124,7 +132,6 @@ function setUpNewGame() {
         if (snake === 0) {
           return
         }
-
         cells[snake[0]].classList.remove('snake')
         for (let segment = 0; segment < snake.length - 1; segment++) {
           snake[segment] = snake[segment + 1]
@@ -132,11 +139,19 @@ function setUpNewGame() {
         }
         snake[snake.length - 1] -= 1
         cells[snake[snake.length - 1]].classList.add('snake')
+        snakeAttack()
       }, setIntervalSnakeSpeed)
     }
 
     if (event.key === 'ArrowUp') {
-      snakeAttack()
+
+
+
+      if (snakeDirection === 'down') {
+        return
+      }
+
+      snakeDirection = 'up'
       direction = snakeDirection[2]
       // console.log(direction)
       clearInterval(startInterval)
@@ -156,12 +171,17 @@ function setUpNewGame() {
         }
         snake[snake.length - 1] -= width
         cells[snake[snake.length - 1]].classList.add('snake')
+        snakeAttack()
       }, setIntervalSnakeSpeed)
     }
 
     if (event.key === 'ArrowDown') {
-      snakeAttack()
-      direction = snakeDirection[3]
+
+      if (snakeDirection === 'up') {
+        return
+      }
+      // direction = snakeDirection[3]
+      snakeDirection = 'down'
       // console.log(direction)
       clearInterval(startInterval)
       clearInterval(rightInterval)
@@ -174,12 +194,14 @@ function setUpNewGame() {
         }
 
         cells[snake[0]].classList.remove('snake')
+
         for (let segment = 0; segment < snake.length - 1; segment++) {
           snake[segment] = snake[segment + 1]
           cells[snake[segment]].classList.add('snake')
         }
         snake[snake.length - 1] += width
         cells[snake[snake.length - 1]].classList.add('snake')
+        snakeAttack()
       }, setIntervalSnakeSpeed)
     }
   })
@@ -201,35 +223,11 @@ function setUpNewGame() {
       cells[snake[snake.length - 1]].classList.remove('food')
       snake.unshift(snake[0] - 1)
       foodGenerator()
-      setIntervalSnakeSpeed -= 5
+      setIntervalSnakeSpeed -= 10
       playerScore += 10
       scoreDisplay.innerHTML = playerScore
     }
   }, 100)
-
-
-
-  // if (snake[5] === snake.splice(1, -100).forEach(element) => {
-  //   return element
-  // })
-
-
-  // console.log(snake.classList)
-  // console.log(cells)
-
-  // Collision Detection Snake
-  // If the snake hits itelf, then the game should end
-  // Snake head [0] needs to hit another cell whithin the snake
-  // if (cells[snake[snake.length - 1]].classList.contains('snake')) {
-  // // if (cells[snake[snake.length - 1]] === snake[0]) {
-  //   console.log('Game Over')
-  //   // gameOver()
-  // }
-
-  //Will likely introduce bugs for foodGen function as it does not cater for the class snakeHead & also snake direction logic i.e. arrowup and down
-  // if (cells[snake[snake.length - 1]].classList.contains('snake')) {
-  //   cells[snake[snake.length - 1]].classList.replace('snakeHead')
-  // }
 
 
   //Collision Detection Wall
@@ -251,22 +249,12 @@ function setUpNewGame() {
 
 
 
-  //End Game Function
-  //Display Game Over sign
-  //Display Pay again button
-  function gameOver() {
-    // clearInterval(startInterval)
-    // clearInterval(rightInterval)
-    // clearInterval(leftInterval)
-    // clearInterval(downInterval)
-    // clearInterval(upInterval)
-    alert(`Game Over!! You Scored ${playerScore}`)
-  }
-
   //Play again
   playAgainButton.addEventListener('click', () => {
     // startButton()
   })
+
+  // console.log(cells)
 
 }
 

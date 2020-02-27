@@ -36,3 +36,8 @@ body {
   background-image: url(./images/food-mouse.jpg);
   background-size: contain;
 }
+
+/*setup for Bulma*/
+.is-horizontal-center {
+  justify-content: center;
+}
