@@ -7,7 +7,11 @@ function setUpNewGame() {
   const scoreDisplay = document.querySelector('#score-display')
   const cells = []
   let snakeDirection = ''
-  const leftwall = [19, 39, 59, 79, 99, 119]
+
+  const munch = new Audio()
+  munch.src = 'sounds/Cartoon-crunching-bite.mp3'
+  // munch.volume between 0 - 1
+  // const leftwall = [19, 39, 59, 79, 99, 119]
 
   let food
   let snake = [22, 23, 24, 25, 26]
@@ -34,14 +38,12 @@ function setUpNewGame() {
   })
   // }
 
-  // Snake wall logic - To Do later
+  // Snake wall logic - To Do later for snake 1
   // Left wall is true if the head of the snake is divisible by width. e.g if the snakehead is 42 then / 21 = true
   // const leftWall = cells[snake[snake.length - 1]] % width === 0
 
   // Right wall is true if snakehead in array is divisible by width and leaves a remainder of width -1 (because width array starts at 0) 
   // const rightWall = cells[snake[snake.length - 1]] % width === width - 1  
-
-
 
 
   // Think about refactoring this using a switch statement
@@ -67,7 +69,7 @@ function setUpNewGame() {
       clearInterval(rightInterval)
       rightInterval = setInterval(() => {
         // console.log(snake)
-        if (snake[snake.length - 1] % width === width - 1) {
+        if (snake[snake.length - 1] % width === width - 1) { //here
           cells[snake[0]].classList.remove('snake')
           for (let segment = 0; segment < snake.length - 1; segment++) {
             snake[segment] = snake[segment + 1]
@@ -86,52 +88,47 @@ function setUpNewGame() {
           cells[snake[snake.length - 1]].classList.add('snake')
           snakeAttack()
         }
-        // if (snake === cells.length - 1) {
-        //   return
-        // } 
-        
       }, setIntervalSnakeSpeed)
     }
 
     if (event.key === 'ArrowLeft') {
-
       if (snakeDirection === 'right') {
         return
       }
-      // if (event.key === 'ArrowLeft') && (snakeDirection === 'right') {
-      //     return
-      //   }
       snakeDirection = 'left'
-      // direction = snakeDirection[1]
-      // console.log(direction)
       clearInterval(startInterval)
       clearInterval(rightInterval)
       clearInterval(downInterval)
       clearInterval(upInterval)
       clearInterval(leftInterval)
       leftInterval = setInterval(() => {
-        if (snake === 0) {
-          return
+        // console.log(snake)
+        if (snake[snake.length - 1] % width === 0) { // width === x position //here removed -1
+          cells[snake[0]].classList.remove('snake')
+          for (let segment = 0; segment < snake.length - 1; segment++) {
+            snake[segment] = snake[segment + 1]
+            cells[snake[segment]].classList.add('snake')
+          }
+          snake[snake.length - 1] += width - 1  //here removed -1
+          cells[snake[snake.length - 1]].classList.add('snake')
+          // console.log(snake)
+        } else {
+          cells[snake[0]].classList.remove('snake')
+          for (let segment = 0; segment < snake.length - 1; segment++) {
+            snake[segment] = snake[segment + 1]
+            cells[snake[segment]].classList.add('snake')
+          }
+          snake[snake.length - 1] -= 1 //change to minus from plus
+          cells[snake[snake.length - 1]].classList.add('snake')
+          snakeAttack()
         }
-        cells[snake[0]].classList.remove('snake')
-        for (let segment = 0; segment < snake.length - 1; segment++) {
-          snake[segment] = snake[segment + 1]
-          cells[snake[segment]].classList.add('snake')
-        }
-        snake[snake.length - 1] -= 1
-        cells[snake[snake.length - 1]].classList.add('snake')
-        snakeAttack()
       }, setIntervalSnakeSpeed)
     }
 
     if (event.key === 'ArrowUp') {
-
-
-
       if (snakeDirection === 'down') {
         return
       }
-
       snakeDirection = 'up'
       // direction = snakeDirection[2]
       // console.log(direction)
@@ -141,23 +138,32 @@ function setUpNewGame() {
       clearInterval(leftInterval)
       clearInterval(upInterval)
       upInterval = setInterval(() => {
-        if (snake < width) {
-          return
+        // if (snake < width) {
+        //   return
+        // }
+        if (snake[snake.length - 1] <= 19) {
+          cells[snake[0]].classList.remove('snake')
+          for (let segment = 0; segment < snake.length - 1; segment++) {
+            snake[segment] = snake[segment + 1]
+            cells[snake[segment]].classList.add('snake')
+          }
+          snake[snake.length - 1] += 380  //here removed -1
+          cells[snake[snake.length - 1]].classList.add('snake')
+        } else {
+          cells[snake[0]].classList.remove('snake')
+          for (let segment = 0; segment < snake.length - 1; segment++) {
+            snake[segment] = snake[segment + 1]
+            cells[snake[segment]].classList.add('snake')
+          }
+          snake[snake.length - 1] -= width
+          cells[snake[snake.length - 1]].classList.add('snake')
+          snakeAttack()
+  
         }
-
-        cells[snake[0]].classList.remove('snake')
-        for (let segment = 0; segment < snake.length - 1; segment++) {
-          snake[segment] = snake[segment + 1]
-          cells[snake[segment]].classList.add('snake')
-        }
-        snake[snake.length - 1] -= width
-        cells[snake[snake.length - 1]].classList.add('snake')
-        snakeAttack()
       }, setIntervalSnakeSpeed)
     }
 
     if (event.key === 'ArrowDown') {
-
       if (snakeDirection === 'up') {
         return
       }
@@ -170,22 +176,37 @@ function setUpNewGame() {
       clearInterval(leftInterval)
       clearInterval(downInterval)
       downInterval = setInterval(() => {
-        if (snake > cells.length - width - 1) {
-          return
-        }
+        // if (snake > cells.length - width - 1) {
+        //   return
+        // }
 
-        cells[snake[0]].classList.remove('snake')
+        if (snake[snake.length - 1] >= 380) { // width === x position //here removed -1
+          cells[snake[0]].classList.remove('snake')
+          for (let segment = 0; segment < snake.length - 1; segment++) {
+            snake[segment] = snake[segment + 1]
+            cells[snake[segment]].classList.add('snake')
+          }
+          snake[snake.length - 1] -= 380  //here removed -1
+          cells[snake[snake.length - 1]].classList.add('snake')
+          // console.log(snake)
+        } else {
 
-        for (let segment = 0; segment < snake.length - 1; segment++) {
-          snake[segment] = snake[segment + 1]
-          cells[snake[segment]].classList.add('snake')
+
+
+          cells[snake[0]].classList.remove('snake')
+
+          for (let segment = 0; segment < snake.length - 1; segment++) {
+            snake[segment] = snake[segment + 1]
+            cells[snake[segment]].classList.add('snake')
+          }
+          snake[snake.length - 1] += width
+          cells[snake[snake.length - 1]].classList.add('snake')
+          snakeAttack()
         }
-        snake[snake.length - 1] += width
-        cells[snake[snake.length - 1]].classList.add('snake')
-        snakeAttack()
       }, setIntervalSnakeSpeed)
     }
   })
+
 
   //Food Function (Example of Recursion)
   function foodGenerator() {
@@ -204,13 +225,13 @@ function setUpNewGame() {
     if (cells[snake[snake.length - 1]].classList.contains('food')) {
       cells[snake[snake.length - 1]].classList.remove('food')
       snake.unshift(snake[0] - 1)
+      munch.play()
       foodGenerator()
       setIntervalSnakeSpeed -= 10
       playerScore += 10
       scoreDisplay.innerHTML = playerScore
     }
-  }, 100)
-
+  }, 50)
 
 
   // Snake Collision Detection
