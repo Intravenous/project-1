@@ -7,11 +7,11 @@ function setUpNewGame() {
   const scoreDisplay = document.querySelector('#score-display')
   const cells = []
   let snakeDirection = ''
+  const leftwall = [19, 39, 59, 79, 99, 119]
 
   let food
   let snake = [22, 23, 24, 25, 26]
   let playerScore = 0
-
 
 
   for (let i = 0; i < gridCellCount; i++) {
@@ -34,38 +34,14 @@ function setUpNewGame() {
   })
   // }
 
-  // console.log(cells[snake[snake.length - 1]])
+  // Snake wall logic - To Do later
+  // Left wall is true if the head of the snake is divisible by width. e.g if the snakehead is 42 then / 21 = true
+  // const leftWall = cells[snake[snake.length - 1]] % width === 0
 
-  // Snake Collision Detection
-  // If the snake hits itelf, then the game should end
-  // when the statement is true, the snake has hit itself and so i need to end the game from there
-  const snakeAttack = function () {
-    console.log(cells[snake[snake.length - 1]])
-    console.log((new Set(snake).size) !== snake.length)
-    if ((new Set(snake).size) !== snake.length) {
-      console.log('Is this working?')
-      gameOver()
-    }
-  }
+  // Right wall is true if snakehead in array is divisible by width and leaves a remainder of width -1 (because width array starts at 0) 
+  // const rightWall = cells[snake[snake.length - 1]] % width === width - 1  
 
-  //End Game Function
-  //Display Game Over sign
-  //Display Pay again button
-  function gameOver() {
-    clearInterval(startInterval)
-    clearInterval(rightInterval)
-    clearInterval(leftInterval)
-    clearInterval(downInterval)
-    clearInterval(upInterval)
-    alert(`Game Over!! You Scored ${playerScore}`)
-    return
-  }
 
-  //Mike's example to show me working it.  Not required
-  // setInterval (() => {
-  // console.log((new Set(snake).size))
-  // console.log(snake.length)
-  // }, 500)
 
 
   // Think about refactoring this using a switch statement
@@ -75,40 +51,45 @@ function setUpNewGame() {
   let upInterval
   let downInterval
   let setIntervalSnakeSpeed = 200
-  // const snakeDirection = ['right', 'left', 'up', 'down']
   let direction
 
   // Snake Movement Keys Logic
-  //BUG -  SHOULD NOT BE ABLE TO GO BACK ON YOURSELF
   document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowRight') {
       if (snakeDirection === 'left') {
         return
       }
       snakeDirection = 'right'
-      // direction = snakeDirection[0]
-      // console.log(direction)
       clearInterval(startInterval)
       clearInterval(leftInterval)
       clearInterval(downInterval)
       clearInterval(upInterval)
       clearInterval(rightInterval)
       rightInterval = setInterval(() => {
-        if (snake === cells.length - 1) {
-          return
-        } /////////////Below doesn't work
-        // if (snake[snake.length - 1] === snake[snake.length - 1]) {
-        //   console.log(snake)
-        //   console.log('Game Over')
-        // }
-        cells[snake[0]].classList.remove('snake')
-        for (let segment = 0; segment < snake.length - 1; segment++) {
-          snake[segment] = snake[segment + 1]
-          cells[snake[segment]].classList.add('snake')
+        // console.log(snake)
+        if (snake[snake.length - 1] % width === width - 1) {
+          cells[snake[0]].classList.remove('snake')
+          for (let segment = 0; segment < snake.length - 1; segment++) {
+            snake[segment] = snake[segment + 1]
+            cells[snake[segment]].classList.add('snake')
+          }
+          snake[snake.length - 1] -= width - 1
+          cells[snake[snake.length - 1]].classList.add('snake')
+          // console.log(snake)
+        } else {
+          cells[snake[0]].classList.remove('snake')
+          for (let segment = 0; segment < snake.length - 1; segment++) {
+            snake[segment] = snake[segment + 1]
+            cells[snake[segment]].classList.add('snake')
+          }
+          snake[snake.length - 1] += 1
+          cells[snake[snake.length - 1]].classList.add('snake')
+          snakeAttack()
         }
-        snake[snake.length - 1] += 1
-        cells[snake[snake.length - 1]].classList.add('snake')
-        snakeAttack()
+        // if (snake === cells.length - 1) {
+        //   return
+        // } 
+        
       }, setIntervalSnakeSpeed)
     }
 
@@ -152,7 +133,7 @@ function setUpNewGame() {
       }
 
       snakeDirection = 'up'
-      direction = snakeDirection[2]
+      // direction = snakeDirection[2]
       // console.log(direction)
       clearInterval(startInterval)
       clearInterval(rightInterval)
@@ -217,6 +198,7 @@ function setUpNewGame() {
     food = randomFood
   }
 
+  //BUG SIMETIMES THE SNAKE DOES NOT GET REMOVED - Maybe need to increase set Interval speed
   //Eat food function
   setInterval(() => {
     if (cells[snake[snake.length - 1]].classList.contains('food')) {
@@ -230,31 +212,37 @@ function setUpNewGame() {
   }, 100)
 
 
-  //Collision Detection Wall
-  //If the snake is minus 0 or greater than 399, then game should end
-  //If snake in top row (0 to 19) or bottom row (380 to 399), then + or minus width should result in game end
-  //if snake hits boundry, then stop - clearInterval(All)
-  //if snake hits itself, then stop - clearInterval(All)
-  //Game end Function should be called   
-  // function collisionDetection() {
-  //   if ((cells[randomCell()].classList.add('food')) === (cells[food].classList.contains('snake'))) {
-  //     eatFood()
-  //   } else if (code concerning boundy)
-  // }
 
-  // cells[snake[snake.length - 1].classList.add('snakeHead')
-  // cells[snake[0]].classList.remove('snake')
-  // cells[snake[0]].classList.remove('snake')
+  // Snake Collision Detection
+  // If the snake hits itelf, then the game should end
+  // When the statement is true, the snake has hit itself and so game ends
+  const snakeAttack = function () {
+    console.log(cells[snake[snake.length - 1]])
+    console.log((new Set(snake).size) !== snake.length)
+    if ((new Set(snake).size) !== snake.length) {
+      console.log('Is this working?')
+      gameOver()
+    }
+  }
 
-
+  //End Game Function
+  //Display Game Over sign
+  //Display Pay again button
+  function gameOver() {
+    clearInterval(startInterval)
+    clearInterval(rightInterval)
+    clearInterval(leftInterval)
+    clearInterval(downInterval)
+    clearInterval(upInterval)
+    alert(`Game Over!! You Scored ${playerScore}`)
+    return
+  }
 
 
   //Play again
   playAgainButton.addEventListener('click', () => {
     // startButton()
   })
-
-  // console.log(cells)
 
 }
 
