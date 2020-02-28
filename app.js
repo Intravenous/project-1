@@ -3,18 +3,26 @@ function setUpNewGame() {
   const gridCellCount = width * width
   const grid = document.querySelector('.grid')
   const startButton = document.querySelector('#start')
-  const playAgainButton = document.querySelector('#play-again')
-  const scoreDisplay = document.querySelector('#score-display')
+  // const playAgainButton = document.querySelector('#play-again')
+  // const scoreDisplay = document.querySelector('#score-display')
   const cells = []
   let snakeDirection = ''
 
+  //Sounds
+  // munch.volume between 0 - 1 - to chnage vol levels
   const munch = new Audio()
   munch.src = 'sounds/Cartoon-crunching-bite.mp3'
-  // munch.volume between 0 - 1
+  const gameOverSound = new Audio()
+  gameOverSound.src = 'sounds/game-over-arcade.wav'
+  const themeTune = new Audio() //Main Theme (freesound)
+  themeTune.src = 'sounds/main-theme.mp3'
+  themeTune.loop = true
+  
 
   let food
-  let snake = [22, 23, 24, 25, 26]
+  const snake = [22, 23, 24, 25, 26]
   let playerScore = 0
+
 
 
   for (let i = 0; i < gridCellCount; i++) {
@@ -28,7 +36,6 @@ function setUpNewGame() {
   // Start Game
   // function StartGame() { // How do I put this in a function so that it can be called by the playAgain button?
   startButton.addEventListener('click', () => {
-    // location.reload()
     startButton.style.display = 'none'
     // scoreDisplay.innerHTML = 0
     foodGenerator()
@@ -41,11 +48,10 @@ function setUpNewGame() {
   // Snake wall logic - To Do later for snake 1
   // Left wall is true if the head of the snake is divisible by width. e.g if the snakehead is 42 then / 21 = true
   // const leftWall = cells[snake[snake.length - 1]] % width === 0
-
   // Right wall is true if snakehead in array is divisible by width and leaves a remainder of width -1 (because width array starts at 0) 
   // const rightWall = cells[snake[snake.length - 1]] % width === width - 1  
 
-
+  // Movement variables
   // Think about refactoring this using a switch statement
   let startInterval
   let rightInterval
@@ -53,10 +59,10 @@ function setUpNewGame() {
   let upInterval
   let downInterval
   let setIntervalSnakeSpeed = 200
-  let direction
 
   // Snake Movement Keys Logic
   document.addEventListener('keydown', (event) => {
+    themeTune.play()
     if (event.key === 'ArrowRight') {
       if (snakeDirection === 'left') {
         return
@@ -68,7 +74,6 @@ function setUpNewGame() {
       clearInterval(upInterval)
       clearInterval(rightInterval)
       rightInterval = setInterval(() => {
-        // console.log(snake)
         if (snake[snake.length - 1] % width === width - 1) { //here
           cells[snake[0]].classList.remove('snake')
           for (let segment = 0; segment < snake.length - 1; segment++) {
@@ -77,7 +82,6 @@ function setUpNewGame() {
           }
           snake[snake.length - 1] -= width - 1
           cells[snake[snake.length - 1]].classList.add('snake')
-          // console.log(snake)
         } else {
           cells[snake[0]].classList.remove('snake')
           for (let segment = 0; segment < snake.length - 1; segment++) {
@@ -102,7 +106,6 @@ function setUpNewGame() {
       clearInterval(upInterval)
       clearInterval(leftInterval)
       leftInterval = setInterval(() => {
-        // console.log(snake)
         if (snake[snake.length - 1] % width === 0) { // width === x position //here removed -1
           cells[snake[0]].classList.remove('snake')
           for (let segment = 0; segment < snake.length - 1; segment++) {
@@ -130,7 +133,6 @@ function setUpNewGame() {
         return
       }
       snakeDirection = 'up'
-
       clearInterval(startInterval)
       clearInterval(rightInterval)
       clearInterval(downInterval)
@@ -155,7 +157,6 @@ function setUpNewGame() {
           snake[snake.length - 1] -= width
           cells[snake[snake.length - 1]].classList.add('snake')
           snakeAttack()
-
         }
       }, setIntervalSnakeSpeed)
     }
@@ -164,17 +165,13 @@ function setUpNewGame() {
       if (snakeDirection === 'up') {
         return
       }
-      // direction = snakeDirection[3]
       snakeDirection = 'down'
-      // console.log(direction)
       clearInterval(startInterval)
       clearInterval(rightInterval)
       clearInterval(upInterval)
       clearInterval(leftInterval)
       clearInterval(downInterval)
       downInterval = setInterval(() => {
-
-
         if (snake[snake.length - 1] >= 380) { // width === x position //here removed -1
           cells[snake[0]].classList.remove('snake')
           for (let segment = 0; segment < snake.length - 1; segment++) {
@@ -185,11 +182,7 @@ function setUpNewGame() {
           cells[snake[snake.length - 1]].classList.add('snake')
           // console.log(snake)
         } else {
-
-
-
           cells[snake[0]].classList.remove('snake')
-
           for (let segment = 0; segment < snake.length - 1; segment++) {
             snake[segment] = snake[segment + 1]
             cells[snake[segment]].classList.add('snake')
@@ -202,7 +195,6 @@ function setUpNewGame() {
     }
   })
 
-
   //Food Function (Example of Recursion)
   function foodGenerator() {
     const randomFood = Math.floor(Math.random() * cells.length)
@@ -214,7 +206,6 @@ function setUpNewGame() {
     food = randomFood
   }
 
-  //BUG SIMETIMES THE SNAKE DOES NOT GET REMOVED - Maybe need to increase set Interval speed
   //Eat food function
   setInterval(() => {
     if (cells[snake[snake.length - 1]].classList.contains('food')) {
@@ -228,7 +219,6 @@ function setUpNewGame() {
     }
   }, 30)
 
-
   // Snake Collision Detection
   // If the snake hits itelf, then the game should end
   // When the statement is true, the snake has hit itself and so game ends
@@ -236,7 +226,8 @@ function setUpNewGame() {
     console.log(cells[snake[snake.length - 1]])
     console.log((new Set(snake).size) !== snake.length)
     if ((new Set(snake).size) !== snake.length) {
-      console.log('Is this working?')
+      gameOverSound.play()
+      themeTune.pause()
       gameOver()
     }
   }
@@ -251,9 +242,9 @@ function setUpNewGame() {
     clearInterval(downInterval)
     clearInterval(upInterval)
     alert(`Game Over!! You Scored ${playerScore}`)
+    location.reload()
     return
   }
-
 
   //Play again
   // playAgainButton.addEventListener('click', () => {
