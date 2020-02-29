@@ -2,37 +2,32 @@
   box-sizing: border-box;
 }
 
-main body {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin: 0;
+body {
+  /* height: 1000vh; */
+  background-color: aqua;
+  font-family: 'Press Start 2P';
+  /* display: flex; */
 }
 
 main {
-  height: 100vh;
-  /* width: 50vw; */
-  background-image: url(./images/Nokia-transparent.png);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
-  background-size: 60%;
+  background-color: rgb(42, 212, 212);
   display: flex;
-  align-items: center;  
-  flex-direction: column;
+  flex-direction: row;
+  text-align: center;
+  /* justify-content: center;
+  align-items: center;
+  align-content: center; */
 }
 
+/*//////////////////////////////////*/
 .grid {
   display: flex;
   flex-direction: row;
   /* border: 3px dashed rgba(66, 63, 63, 0.863); */
-  width: 550px;
-  height: 382px;
+  /* border-radius: 25px; */
+  width: 250px;
+  height: 190px;
   flex-wrap: wrap; /*ensures the boxes wrap rather than one line*/
-  border-radius: 25;
 }
 
 .cell {
@@ -40,6 +35,47 @@ main {
   height: 5%;
   /* border: 1px solid green; */
   background-color: #b1e425ea;
+}
+/*//////////////////////////////////*/
+
+section {
+  background-color: brown;
+  width: 65%;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  /* align-items: center; */
+  justify-content: center;
+  /* flex-direction: column; */
+  background-image: url('images/Nokia-transparent.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  padding-top: 208px;
+}
+aside {
+  background-color: bisque;
+  width: 35%;
+  height: 100vh;
+}
+
+header {
+  text-align: center;
+  font-size: 20px;
+}
+
+#instruction-detail {
+  background-color: cadetblue;
+}
+
+img {
+  max-width: 100%;
+  max-height: 95%;
+  /* margin: 10px; */
+}
+
+footer {
+  background-color: cadetblue;
 }
 
 .snake {
@@ -53,8 +89,8 @@ main {
   background-repeat: no-repeat;
 }
 
-button {
+/* button {
   background-color: #1acbf4;
   width: 115px;
   border-radius: 25px;
-}
+} */

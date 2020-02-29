@@ -4,7 +4,7 @@ function setUpNewGame() {
   const grid = document.querySelector('.grid')
   const startButton = document.querySelector('#start')
   // const playAgainButton = document.querySelector('#play-again')
-  // const scoreDisplay = document.querySelector('#score-display')
+  const scoreDisplay = document.querySelector('#score-display')
   const cells = []
   let snakeDirection = ''
 
@@ -22,7 +22,6 @@ function setUpNewGame() {
   let food
   const snake = [22, 23, 24, 25, 26]
   let playerScore = 0
-
 
 
   for (let i = 0; i < gridCellCount; i++) {
@@ -213,9 +212,9 @@ function setUpNewGame() {
       snake.unshift(snake[0] - 1)
       munch.play()
       foodGenerator()
-      setIntervalSnakeSpeed -= 10
+      setIntervalSnakeSpeed -= 5
       playerScore += 10
-      // scoreDisplay.innerHTML = playerScore
+      scoreDisplay.innerHTML = playerScore
     }
   }, 30)
 
