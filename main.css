@@ -3,75 +3,71 @@
 }
 
 body {
-  /* height: 1000vh; */
-  background-color: aqua;
+  /* background-color: aqua; */
   font-family: 'Press Start 2P';
-  /* display: flex; */
+}
+
+p {
+font-size: 15px;
+font-weight: lighter;
 }
 
 main {
-  background-color: rgb(42, 212, 212);
+  /* background-color: rgb(42, 212, 212); */
   display: flex;
   flex-direction: row;
   text-align: center;
-  /* justify-content: center;
-  align-items: center;
-  align-content: center; */
+  max-height: 810px;
+  min-height: 810px;
+  margin-top: 50px;
 }
 
-/*//////////////////////////////////*/
 .grid {
   display: flex;
   flex-direction: row;
-  /* border: 3px dashed rgba(66, 63, 63, 0.863); */
-  /* border-radius: 25px; */
   width: 250px;
   height: 190px;
   flex-wrap: wrap; /*ensures the boxes wrap rather than one line*/
 }
 
+/* orignal width and height 5% */
 .cell {
-  width: 5%; /*need to change width & height if width size of grid changes in app.js*/
-  height: 5%;
+  width: 10%; /*need to change width & height if width size of grid changes in app.js*/
+  height: 10%;
   /* border: 1px solid green; */
   background-color: #b1e425ea;
+  /* height: 100vh; */
 }
-/*//////////////////////////////////*/
 
 section {
-  background-color: brown;
   width: 65%;
-  height: 100vh;
   display: flex;
   flex-direction: row;
-  /* align-items: center; */
   justify-content: center;
-  /* flex-direction: column; */
   background-image: url('images/Nokia-transparent.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
   padding-top: 208px;
+  /* border: 2px solid grey; */
 }
 aside {
-  background-color: bisque;
+  /* background-color: bisque; */
   width: 35%;
   height: 100vh;
+  /* border: 2px solid grey; */
+  padding: 10px;
 }
 
 header {
   text-align: center;
   font-size: 20px;
+  background-color: grey;
+  padding: 1px;
 }
 
 #instruction-detail {
   background-color: cadetblue;
-}
-
-img {
-  max-width: 100%;
-  max-height: 95%;
-  /* margin: 10px; */
 }
 
 footer {
@@ -89,8 +85,11 @@ footer {
   background-repeat: no-repeat;
 }
 
-/* button {
+button {
+  font-weight: bold;
   background-color: #1acbf4;
-  width: 115px;
+  width: 200px;
+  height: 50px;
   border-radius: 25px;
-} */
+  font-size: 25px;
+}

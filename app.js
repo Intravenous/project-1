@@ -1,15 +1,14 @@
 function setUpNewGame() {
-  const width = 20
+  const width = 10 //original 20
   const gridCellCount = width * width
   const grid = document.querySelector('.grid')
   const startButton = document.querySelector('#start')
-  // const playAgainButton = document.querySelector('#play-again')
   const scoreDisplay = document.querySelector('#score-display')
   const cells = []
   let snakeDirection = ''
 
   //Sounds
-  // munch.volume between 0 - 1 - to chnage vol levels
+  // munch.volume between 0 - 1 - to change vol levels
   const munch = new Audio()
   munch.src = 'sounds/Cartoon-crunching-bite.mp3'
   const gameOverSound = new Audio()
@@ -20,7 +19,7 @@ function setUpNewGame() {
   
 
   let food
-  const snake = [22, 23, 24, 25, 26]
+  const snake = [22, 23] //original 5 long
   let playerScore = 0
 
 
@@ -36,7 +35,7 @@ function setUpNewGame() {
   // function StartGame() { // How do I put this in a function so that it can be called by the playAgain button?
   startButton.addEventListener('click', () => {
     startButton.style.display = 'none'
-    // scoreDisplay.innerHTML = 0
+    scoreDisplay.innerHTML = 0
     foodGenerator()
     snake.forEach((segment) => {
       cells[segment].classList.add('snake')
@@ -139,13 +138,13 @@ function setUpNewGame() {
       clearInterval(upInterval)
       upInterval = setInterval(() => {
 
-        if (snake[snake.length - 1] <= 19) {
+        if (snake[snake.length - 1] <= 9) { //original 19
           cells[snake[0]].classList.remove('snake')
           for (let segment = 0; segment < snake.length - 1; segment++) {
             snake[segment] = snake[segment + 1]
             cells[snake[segment]].classList.add('snake')
           }
-          snake[snake.length - 1] += 380  //here removed -1
+          snake[snake.length - 1] += 90  //original 380
           cells[snake[snake.length - 1]].classList.add('snake')
         } else {
           cells[snake[0]].classList.remove('snake')
@@ -171,13 +170,13 @@ function setUpNewGame() {
       clearInterval(leftInterval)
       clearInterval(downInterval)
       downInterval = setInterval(() => {
-        if (snake[snake.length - 1] >= 380) { // width === x position //here removed -1
+        if (snake[snake.length - 1] >= 90) { //original 380
           cells[snake[0]].classList.remove('snake')
           for (let segment = 0; segment < snake.length - 1; segment++) {
             snake[segment] = snake[segment + 1]
             cells[snake[segment]].classList.add('snake')
           }
-          snake[snake.length - 1] -= 380  //here removed -1
+          snake[snake.length - 1] -= 90  //original 380
           cells[snake[snake.length - 1]].classList.add('snake')
           // console.log(snake)
         } else {
@@ -244,11 +243,6 @@ function setUpNewGame() {
     location.reload()
     return
   }
-
-  //Play again
-  // playAgainButton.addEventListener('click', () => {
-  //   location.reload()
-  // })
 
 }
 
